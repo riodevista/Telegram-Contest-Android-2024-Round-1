@@ -267,12 +267,16 @@ public class HintView2 extends View {
             if (this.icon instanceof RLottieDrawable) {
                 duration = Math.max(duration, ((RLottieDrawable) this.icon).getDuration());
             }
-            // TODO: to be custom
             this.iconWidth  = this.icon.getIntrinsicWidth();
             this.iconHeight = this.icon.getIntrinsicHeight();
             this.iconLeft = true;
         }
         return this;
+    }
+
+    public void setIconSize(int width, int height) {
+        this.iconWidth  = dp(width);
+        this.iconHeight = dp(height);
     }
 
     public static float measureCorrectly(CharSequence text, TextPaint paint) {

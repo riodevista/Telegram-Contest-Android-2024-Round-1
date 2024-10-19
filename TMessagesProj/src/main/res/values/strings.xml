@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">Telegram</string>
-    <string name="AppNameBeta">Telegram Beta</string>
+    <string name="AppName">DB Telegram</string>
+    <string name="AppNameBeta">DB Telegram Beta</string>
     <string name="LanguageName">English</string>
     <string name="English">English</string>
     <string name="LanguageNameInEnglish">English</string>
@@ -3472,6 +3472,7 @@
     <string name="BotWebViewRequestWriteMessage">Allow this bot to send you messages?</string>
     <string name="BotMultiContactsSelectorLimit_one">You can select maximum %1$d user.</string>
     <string name="BotMultiContactsSelectorLimit_other">You can select maximum %1$d users.</string>
+    <string name="BotStartHint">Tap here to use this bot</string>
     <!--button titles-->
     <string name="Done">Done</string>
     <string name="Open">Open</string>

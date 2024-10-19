@@ -350,6 +350,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private LinkSpanDrawable.LinksTextView bottomOverlayLinksText;
     private TextView bottomOverlayText;
     private TextView bottomOverlayStartButton;
+    private HintView2 bottomOverlayStartHint;
     private ImageView bottomOverlayImage;
     private RadialProgressView bottomOverlayProgress;
     private AnimatorSet bottomOverlayAnimation;
@@ -7956,9 +7957,22 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         bottomOverlayStartButton.setOnClickListener(v -> bottomOverlayChatText.callOnClick());
         bottomOverlayChat.addView(bottomOverlayStartButton, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER, 8, 8, 8, 8));
 
+        bottomOverlayStartHint = new HintView2(getContext(), HintView2.DIRECTION_BOTTOM);
+        bottomOverlayStartHint.setRounding(8);
+        bottomOverlayStartHint.setMultilineText(false);
+        bottomOverlayStartHint.setText(LocaleController.getString(R.string.BotStartHint));
+        bottomOverlayStartHint.setPadding(dp(12), 0, dp(12), 0);
+        bottomOverlayStartHint.setIcon(R.raw.double_arrow_down);
+        bottomOverlayStartHint.setIconSize(17, 17);
+        bottomOverlayStartHint.setDuration(-1);
+        bottomOverlayStartHint.setBounce(true);
+        bottomOverlayStartHint.setVisibility(View.GONE);
+        contentView.addView(bottomOverlayStartHint, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 200, Gravity.BOTTOM, 0, 0, 0, 51 + 16 + 5));
+
         if (currentUser != null && currentUser.bot && currentUser.id != UserObject.VERIFY && !UserObject.isDeleted(currentUser) && !UserObject.isReplyUser(currentUser) && !isInScheduleMode() && chatMode != MODE_PINNED && chatMode != MODE_SAVED && !isReport()) {
             bottomOverlayStartButton.setVisibility(View.VISIBLE);
             bottomOverlayChat.setVisibility(View.VISIBLE);
+            bottomOverlayStartHint.setVisibility(View.VISIBLE);
         }
 
         bottomOverlayLinksText = new LinkSpanDrawable.LinksTextView(context, themeDelegate);
@@ -19969,6 +19983,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     getMessagesController().sendBotStart(currentUser, botUser);
 
                     bottomOverlayChat.setVisibility(View.GONE);
+                    bottomOverlayStartHint.setVisibility(View.GONE);
+                    bottomOverlayStartHint.hide();
                     if (!isInsideContainer) {
                         chatActivityEnterView.setVisibility(View.VISIBLE);
                     }
@@ -25179,6 +25195,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 if (bottomOverlayStartButton != null) {
                     bottomOverlayStartButton.setVisibility(View.GONE);
                 }
+                if (bottomOverlayStartHint != null) {
+                    bottomOverlayStartHint.setVisibility(View.GONE);
+                }
                 if (currentUser.bot) {
                     bottomOverlayChatText.setText(LocaleController.getString(R.string.BotUnblock));
                 } else {
@@ -25206,6 +25225,8 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
 //                bottomOverlayStartButton.setText(LocaleController.getString(R.string.BotStart));
                 if (bottomOverlayStartButton != null) {
                     bottomOverlayStartButton.setVisibility(View.VISIBLE);
+                    bottomOverlayStartHint.setVisibility(View.VISIBLE);
+                    bottomOverlayStartHint.show();
                 }
                 bottomOverlayChatText.setVisibility(View.GONE);
                 chatActivityEnterView.hidePopup(false);
@@ -25231,6 +25252,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 searchContainer.setVisibility(View.INVISIBLE);
             }
             bottomOverlayChat.setVisibility(View.INVISIBLE);
+            bottomOverlayStartHint.setVisibility(View.INVISIBLE);
             chatActivityEnterView.setFieldFocused(false);
             chatActivityEnterView.setVisibility(View.INVISIBLE);
         } else if (bottomOverlayLinks) {
@@ -25274,6 +25296,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         searchExpandProgress = 1f;
                         chatActivityEnterView.setVisibility(View.INVISIBLE);
                         bottomOverlayChat.setVisibility(View.INVISIBLE);
+                        bottomOverlayStartHint.setVisibility(View.INVISIBLE);
                         invalidateChatListViewTopPadding();
                     }
                 });
@@ -25283,6 +25306,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             } else {
                 chatActivityEnterView.setVisibility(View.INVISIBLE);
                 bottomOverlayChat.setVisibility(View.INVISIBLE);
+                bottomOverlayStartHint.setVisibility(View.INVISIBLE);
                 invalidateChatListViewTopPadding();
             }
 
@@ -25360,6 +25384,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             }
             if (isInsideContainer || forceNoBottom) {
                 bottomOverlayChat.setVisibility(View.GONE);
+                bottomOverlayStartHint.setVisibility(View.GONE);
                 chatActivityEnterView.setVisibility(View.GONE);
             } else if (isReport()) {
                 bottomOverlayChat.setVisibility(View.VISIBLE);
@@ -25371,6 +25396,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     chatActivityEnterView.setVisibility(View.VISIBLE);
                     AndroidUtilities.updateViewShow(bottomOverlayChat, false, false, true);
                     bottomOverlayChat.setVisibility(View.INVISIBLE);
+                    bottomOverlayStartHint.setVisibility(View.INVISIBLE);
                     chatActivityEnterView.setFieldFocused();
                     AndroidUtilities.runOnUIThread(() -> chatActivityEnterView.openKeyboard(), 100);
                 } else {
@@ -25398,6 +25424,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     chatActivityEnterView.setVisibility(View.INVISIBLE);
                 } else {
                     bottomOverlayChat.setVisibility(View.INVISIBLE);
+                    bottomOverlayStartHint.setVisibility(View.INVISIBLE);
                     chatActivityEnterView.setVisibility(View.VISIBLE);
                 }
             }
@@ -25408,6 +25435,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
         }
         if (sentBotStart) {
             bottomOverlayChat.setVisibility(View.GONE);
+            bottomOverlayStartHint.setVisibility(View.GONE);
             chatActivityEnterView.setVisibility(View.VISIBLE);
             chatActivityEnterView.setBotInfo(botInfo);
         }

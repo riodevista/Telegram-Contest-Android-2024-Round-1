@@ -76,6 +76,7 @@ public class PermanentLinkBottomSheet extends BottomSheet {
         linkActionView.setUsers(0, null);
         linkActionView.hideRevokeOption(true);
         linkActionView.setDelegate(() -> generateLink(true));
+        linkActionView.showQRView();
 
         titleView = new TextView(context);
         titleView.setText(LocaleController.getString(R.string.InviteLink));

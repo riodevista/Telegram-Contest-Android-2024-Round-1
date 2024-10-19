@@ -59,6 +59,7 @@ public class LinkActionView extends LinearLayout {
     String link;
     BaseFragment fragment;
     ImageView optionsView;
+    ImageView qrView;
     private final TextView copyView;
     private final TextView shareView;
     private final TextView removeView;
@@ -100,6 +101,14 @@ public class LinkActionView extends LinearLayout {
         optionsView.setContentDescription(LocaleController.getString(R.string.AccDescrMoreOptions));
         optionsView.setScaleType(ImageView.ScaleType.CENTER);
         frameLayout.addView(optionsView, LayoutHelper.createFrame(40, 48, Gravity.RIGHT | Gravity.CENTER_VERTICAL));
+
+        qrView = new ImageView(context);
+        qrView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.msg_qrcode));
+        qrView.setContentDescription(LocaleController.getString(R.string.GetQRCode));
+        qrView.setScaleType(ImageView.ScaleType.CENTER);
+        qrView.setVisibility(View.GONE);
+        frameLayout.addView(qrView, LayoutHelper.createFrame(48, 48, Gravity.RIGHT | Gravity.CENTER_VERTICAL));
+
         addView(frameLayout, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, containerPadding, 0, containerPadding, 0));
 
         LinearLayout linearLayout = new LinearLayout(context);
@@ -343,6 +352,8 @@ public class LinkActionView extends LinearLayout {
 
         });
 
+        qrView.setOnClickListener(view -> showQrCode());
+
         frameLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -383,6 +394,7 @@ public class LinkActionView extends LinearLayout {
     }
 
     private String qrText;
+
     public void setQrText(String text) {
         qrText = text;
     }
@@ -437,11 +449,13 @@ public class LinkActionView extends LinearLayout {
         this.revoked = revoked;
         if (revoked) {
             optionsView.setVisibility(View.GONE);
+            qrView.setVisibility(View.GONE);
             shareView.setVisibility(View.GONE);
             copyView.setVisibility(View.GONE);
             removeView.setVisibility(View.VISIBLE);
         } else {
             optionsView.setVisibility(View.VISIBLE);
+            qrView.setVisibility(View.GONE);
             shareView.setVisibility(View.VISIBLE);
             copyView.setVisibility(View.VISIBLE);
             removeView.setVisibility(View.GONE);
@@ -456,6 +470,7 @@ public class LinkActionView extends LinearLayout {
         if (hideRevokeOption != b) {
             hideRevokeOption = b;
             optionsView.setVisibility(View.VISIBLE);
+            qrView.setVisibility(View.GONE);
             optionsView.setImageDrawable(ContextCompat.getDrawable(optionsView.getContext(), R.drawable.ic_ab_other));
         }
     }
@@ -616,5 +631,10 @@ public class LinkActionView extends LinearLayout {
 
     public void setCanEdit(boolean canEdit) {
         this.canEdit = canEdit;
+    }
+
+    public void showQRView() {
+        optionsView.setVisibility(View.GONE);
+        qrView.setVisibility(View.VISIBLE);
     }
 }
